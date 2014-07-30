@@ -1,5 +1,5 @@
 class PlacesController < ApplicationController
-    before_action :authenticate_user!, :only => [:new, :create, :edit, :update]
+    before_action :authenticate_user!, :only => [:new, :create, :edit, :update, :destroy]
 
 
 	def index
@@ -41,7 +41,7 @@ class PlacesController < ApplicationController
       if @place.user != current_user
         return render :text => 'Bad kitten, no yarn for you!', :status => :forbidden
       end
-      
+
       @place.destroy
       redirect_to root_path
   end
