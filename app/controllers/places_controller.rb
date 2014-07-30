@@ -1,5 +1,6 @@
 class PlacesController < ApplicationController
-    before_action :authenticate_user!, :only => [:new, :create]
+    before_action :authenticate_user!, :only => [:new, :create, :edit, :update]
+
 
 	def index
 		  @places = Place.all
@@ -20,16 +21,27 @@ class PlacesController < ApplicationController
 
   def edit
       @place = Place.find(params[:id])
+      if @place.user != current_user
+        return render :text => 'Bad kitten, no yarn for you!', :status => :forbidden
+      end
   end
 
   def update
       @place = Place.find(params[:id])
+      if @place.user != current_user
+        return render :text => 'Bad kitten, no yarn for you!', :status => :forbidden
+      end
+
       @place.update_attributes(place_params)
       redirect_to root_path
   end
 
   def destroy
       @place = Place.find(params[:id])
+      if @place.user != current_user
+        return render :text => 'Bad kitten, no yarn for you!', :status => :forbidden
+      end
+      
       @place.destroy
       redirect_to root_path
   end
